@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-nu
+  labels:
+    app: java-nu
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: caixaverso
+  template:
+    metadata:
+      labels:
+        app: caixaverso
+    spec:
+      containers:
+      - name: java
+        image: eclipse-temurin:21-jre
+        imagePullPolicy: IfNotPresent
+        command: ["sh", "-c"]
+        args:
+          - |
+            java -XX:MaxRAMPercentage=75.0 -XshowSettings:vm -version
+            sleep infinity
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 200m
+            memory: 1Gi
